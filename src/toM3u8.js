@@ -329,6 +329,13 @@ export const formatVideoPlaylist = ({
     playlist.attributes['FRAME-RATE'] = attributes.frameRate;
   }
 
+  // qualityRanking is inversely related to quality (higher value = lower quality)
+  // so SCORE is calculated as 1/(qualityRanking+1) (higher SCORE = higher quality)
+  // The +1 ensures we avoid division by zero when qualityRanking is 0
+  if (attributes.qualityRanking !== undefined) {
+    playlist.attributes.SCORE = 1 / (attributes.qualityRanking + 1);
+  }
+
   if (attributes.contentProtection) {
     playlist.contentProtection = attributes.contentProtection;
   }
